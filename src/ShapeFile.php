@@ -130,9 +130,9 @@ class ShapeFile implements \Iterator
         }
     }
     
-    public function current()
+    public function current($geometry_format = null)
     {
-        return $this->readSHPRecord();
+        return $this->readSHPRecord($geometry_format);
     }
 
     public function key()
