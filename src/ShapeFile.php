@@ -205,6 +205,14 @@ class ShapeFile implements \Iterator
         return $ret;
     }
     
+    public function setFlags($flags)
+    {
+        $this->flags = array(
+            self::FLAG_SUPPRESS_Z   => ($flags & self::FLAG_SUPPRESS_Z) > 0,
+            self::FLAG_SUPPRESS_M   => ($flags & self::FLAG_SUPPRESS_M) > 0
+        );
+    }
+    
     
     
     /***************************** PROTECTED *****************************/
@@ -228,10 +236,7 @@ class ShapeFile implements \Iterator
         $this->prj        = $prj;
         
         // Flags
-        $this->flags = array(
-            self::FLAG_SUPPRESS_Z   => ($flags & self::FLAG_SUPPRESS_Z) > 0,
-            self::FLAG_SUPPRESS_M   => ($flags & self::FLAG_SUPPRESS_M) > 0
-        );
+        $this->setFlags($flags);
         
         // Misc
         $this->default_geometry_format  = self::GEOMETRY_ARRAY;
