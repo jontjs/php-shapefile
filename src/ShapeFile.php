@@ -18,6 +18,7 @@ class ShapeFile implements \Iterator
     const FORMAT_INT                = 0;
     const FORMAT_STR                = 1;
     // getRecord() Geometry format
+    const GEOMETRY_NONE             = 0;
     const GEOMETRY_ARRAY            = 0b1;
     const GEOMETRY_WKT              = 0b10;
     const GEOMETRY_GEOJSON_GEOMETRY = 0b100;
@@ -408,19 +409,23 @@ class ShapeFile implements \Iterator
             25  => 'readPolygonM',
             28  => 'readMultiPointM'
         );
-        $shp = $this->{$methods[$shape_type]}();
         // Read DBF data
         $dbf = $this->readDBFRecord();
         
         // Convert output
-        $geometry_format = $geometry_format ?: $this->default_geometry_format;
+        $geometry_format = ($geometry_format !== null)
+            ? (int) $geometry_format
+            : $this->default_geometry_format;
+        $shp = ($geometry_format != self::GEOMETRY_NONE)
+            ? $this->{$methods[$shape_type]}()
+            : null;
         if ($geometry_format == self::GEOMETRY_WKT) {
             $shp = $this->toWKT($shp);
         } elseif ($geometry_format == self::GEOMETRY_GEOJSON_GEOMETRY) {
             $shp = $this->toGeoJSON($shp);
         } elseif ($geometry_format == self::GEOMETRY_GEOJSON_FEATURE) {
             $shp = $this->toGeoJSON($shp, $dbf);
-        } else {
+        } elseif ($geometry_format != self::GEOMETRY_NONE) {
             $temp = ($geometry_format & self::GEOMETRY_ARRAY) ? $shp : array();
             if ($geometry_format & self::GEOMETRY_WKT) {
                 $temp['wkt'] = $this->toWKT($shp);
