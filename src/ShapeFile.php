@@ -927,7 +927,7 @@ class ShapeFile implements \Iterator
     }
     
     
-    public function toGeoJSON($shp, $dbf = null)
+    public function toGeoJSON($shp, $dbf = null, $encode = true)
     {
         if (!$shp) {
             return null;
@@ -1005,7 +1005,9 @@ class ShapeFile implements \Iterator
                     'properties'    => $dbf
             );
         }
-        return json_encode($ret);
+        return ($encode)
+            ? json_encode($ret)
+            : $ret;
     }
     
     
