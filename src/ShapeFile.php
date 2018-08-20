@@ -854,7 +854,7 @@ class ShapeFile implements \Iterator
     }
     
     
-    private function toWKT($shp)
+    public function toWKT($shp)
     {
         if (!$shp) {
             return null;
@@ -927,7 +927,7 @@ class ShapeFile implements \Iterator
     }
     
     
-    private function toGeoJSON($shp, $dbf = null)
+    public function toGeoJSON($shp, $dbf = null)
     {
         if (!$shp) {
             return null;
