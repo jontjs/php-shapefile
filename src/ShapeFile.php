@@ -23,6 +23,7 @@ class ShapeFile implements \Iterator
     const GEOMETRY_WKT              = 0b10;
     const GEOMETRY_GEOJSON_GEOMETRY = 0b100;
     const GEOMETRY_GEOJSON_FEATURE  = 0b1000;
+    const GEOMETRY_RAW              = 0b10000;
     const GEOMETRY_BOTH             = 0b11;     // DEPRECATED in v2.4.0!
     // End of file
     const EOF                       = 0;
@@ -430,6 +431,8 @@ class ShapeFile implements \Iterator
             $shp = $this->toGeoJSON($shp);
         } elseif ($geometry_format == self::GEOMETRY_GEOJSON_FEATURE) {
             $shp = $this->toGeoJSON($shp, $dbf);
+        } elseif ($geometry_format == self::GEOMETRY_RAW) {
+            $shp = $shp;
         } elseif ($geometry_format != self::GEOMETRY_NONE) {
             $temp = ($geometry_format & self::GEOMETRY_ARRAY) ? $shp : array();
             if ($geometry_format & self::GEOMETRY_WKT) {
