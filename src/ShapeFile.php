@@ -294,6 +294,9 @@ class ShapeFile implements \Iterator
         if ($invert_endianness) {
             $data = strrev($data);
         }
+        if (mb_strlen($data) < 1) {
+            return;
+        }
         return current(unpack($type, $data));
     }
     
